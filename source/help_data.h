@@ -5748,4 +5748,4 @@ Href H_R [] =
     {NULL,     14799, HELP_PREFERENCES,   "Autoload Files"}
 };
 
-static const char * NEditVersion = "NEdit 5.7\nJan 14, 2017\n";
+static const char * NEditVersion = "NEdit 5.7 + Patches\nJan 14, 2017\n";

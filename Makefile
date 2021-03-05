@@ -11,7 +11,7 @@ SHELL=/bin/sh
 # This builds an intermediate library in the util/ directory,
 # then builds the nedit and nc executables in the source/ directory.
 #
-
+CFLAGS:=-g -DMOTIF_FILEDIALOG
 all:
 	@echo "Please specify target:"
 	@echo "(For example, type \"make linux\" for a Linux system.)"
@@ -31,8 +31,8 @@ all:
 	    $(MAKE) -f Makefile.$@ libNUtil.a)
 	(cd Xlt;    $(MAKE) -f Makefile.$@ libXlt.a)
 	(cd Microline/XmL;    $(MAKE) -f Makefile.$@ libXmL.a)
-	(cd source; $(MAKE) -f Makefile.$@ nedit nc)
-	@source/nedit -V
+	(cd source; $(MAKE) -f Makefile.$@ znedit nc)
+	@source/znedit -V
 
 # This should not be in the default build, as users may not have Perl
 # installed.  This is only interesting to developers.
@@ -55,15 +55,14 @@ realclean: clean
 #
 # The following is for creating binary packages of NEdit.
 #
-RELEASE=nedit-5.7-`uname -s`-`uname -m`
-BINDIST-FILES=source/nedit source/nc README COPYRIGHT ReleaseNotes doc/nedit.doc doc/nedit.html doc/nedit.man doc/nc.man doc/faq.txt
-
+RELEASE=znedit-5.7-`uname -s`-`uname -m`
+BINDIST-FILES=source/znedit source/nc README COPYRIGHT ReleaseNotes
 dist-bin: $(BINDIST-FILES)
 	rm -rf $(RELEASE)
 	mkdir -p $(RELEASE)
 	cp $(BINDIST-FILES) $(RELEASE)/
-	strip $(RELEASE)/nedit $(RELEASE)/nc
-	chmod 555 $(RELEASE)/nedit $(RELEASE)/nc
+	strip $(RELEASE)/znedit $(RELEASE)/nc
+	chmod 555 $(RELEASE)/znedit $(RELEASE)/nc
 	tar cf $(RELEASE).tar $(RELEASE)
 	compress -c $(RELEASE).tar > $(RELEASE).tar.Z
 	-gzip -9 -c $(RELEASE).tar > $(RELEASE).tar.gz

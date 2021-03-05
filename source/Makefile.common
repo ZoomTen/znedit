@@ -14,11 +14,11 @@ XMLLIB = ../Microline/XmL/libXmL.a
 .c.o:
 	$(CC) -c -I../Microline -I../Xlt $(CFLAGS) -o $@ $<
 
-all: nedit nc
+all: znedit nc
 
 # Note there is no depedency for linkdate.c/o.  This is intentional,
 # we only want natural rebuilds to regenerate the link date.
-nedit: $(OBJS) ../util/libNUtil.a $(XMLLIB) $(XLTLIB)
+znedit: $(OBJS) ../util/libNUtil.a $(XMLLIB) $(XLTLIB)
 	$(CC) $(CFLAGS) -c linkdate.c -o linkdate.o
 	$(CC) $(CFLAGS) $(OBJS) linkdate.o $(XMLLIB) \
 	 $(XLTLIB) ../util/libNUtil.a $(LIBS) -o $@
