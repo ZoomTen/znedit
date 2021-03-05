@@ -51,6 +51,7 @@
 #include "interpret.h"
 #include "smartIndent.h"
 #include "windowTitle.h"
+#include "tabDragDrop.h"
 #include "../util/getfiles.h"
 #include "../util/DialogF.h"
 #include "../util/misc.h"
@@ -581,6 +582,7 @@ static XtActionsRec Actions[] = {
     {"set_em_tab_dist", setEmTabDistAP},
     {"set_use_tabs", setUseTabsAP},
     {"set_fonts", setFontsAP},
+    {"begin_tab_drag", beginTabDragAP},
     {"set_language_mode", setLanguageModeAP}
 };
 

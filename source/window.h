@@ -62,6 +62,7 @@ int WidgetToPaneIndex(WindowInfo *window, Widget w);
 void ClosePane(WindowInfo *window);
 int GetShowTabBar(WindowInfo *window);
 void ShowTabBar(WindowInfo *window, int state);
+int getTabPosition(Widget tab);
 void ShowStatsLine(WindowInfo *window, int state);
 void ShowISearchLine(WindowInfo *window, int state);
 void TempShowISearch(WindowInfo *window, int state);

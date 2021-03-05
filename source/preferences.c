@@ -291,6 +291,9 @@ static struct prefData {
     XFontStruct *italicFontStruct;
     XFontStruct *boldItalicFontStruct;
     int sortTabs;		/* sort tabs alphabetically */
+    int dragDropTabs;		/* enable drag&drop for tabs */
+    int dragDropTabsCursor;		/* enable nice cursor for tabs drag&drop */
+    int dragDropTabsAnimation;		/* enable drag&drop animation */
     int repositionDialogs;	/* w. to reposition dialogs under the pointer */
     int autoScroll;             /* w. to autoscroll near top/bottom of screen */
     int autoScrollVPadding;     /* how close to get before autoscrolling */
@@ -898,6 +901,12 @@ static PrefDescripRec PrefDescrip[] = {
     	&PrefData.iSearchLine, NULL, True},
     {"sortTabs", "SortTabs", PREF_BOOLEAN, "False",
     	&PrefData.sortTabs, NULL, True},
+    {"dragDropTabs", "DragDropTabs", PREF_BOOLEAN, "False",
+    	&PrefData.dragDropTabs, NULL, True},
+    {"dragDropTabsCursor", "DragDropTabsCursor", PREF_BOOLEAN, "False",
+    	&PrefData.dragDropTabsCursor, NULL, True},
+    {"dragDropTabsAnimation", "DragDropTabsAnimation", PREF_BOOLEAN, "False",
+    	&PrefData.dragDropTabsAnimation, NULL, True},
     {"tabBar", "TabBar", PREF_BOOLEAN, "True",
     	&PrefData.tabBar, NULL, True},
     {"tabBarHideOne", "TabBarHideOne", PREF_BOOLEAN, "True",
@@ -1689,6 +1698,37 @@ int GetPrefSortTabs(void)
 {
     return PrefData.sortTabs;
 }
+
+void SetPerfDragDropTabs(int state)
+{
+    setIntPref(&PrefData.dragDropTabs, state);
+}
+
+int GetPerfDragDropTabs(void)
+{
+    return PrefData.dragDropTabs;
+}
+
+void SetPerfDragDropTabsCursor(int state)
+{
+    setIntPref(&PrefData.dragDropTabsCursor, state);
+}
+
+int GetPerfDragDropTabsCursor(void)
+{
+    return PrefData.dragDropTabsCursor;
+}
+
+void SetPerfDragDropTabsAnimation(int state)
+{
+    setIntPref(&PrefData.dragDropTabsAnimation, state);
+}
+
+int GetPerfDragDropTabsAnimation(void)
+{
+    return PrefData.dragDropTabsAnimation;
+}
+
 
 void SetPrefTabBar(int state)
 {
