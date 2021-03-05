@@ -33,6 +33,7 @@
 #include "misc.h"
 #include "DialogF.h"
 #include "nedit_malloc.h"
+#include "xdnd.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -341,6 +342,8 @@ void RealizeWithoutForcingPosition(Widget shell)
     
     /* Restore the value of XmNmappedWhenManaged */
     XtVaSetValues(shell, XmNmappedWhenManaged, mappedWhenManaged, NULL);
+	
+	XdndEnable(shell);
 }
 
 /*

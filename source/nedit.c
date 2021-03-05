@@ -53,6 +53,7 @@
 #include "../util/getfiles.h"
 #include "../util/motif.h"
 #include "../util/nedit_malloc.h"
+#include "../util/xdnd.h"
 
 #include <ctype.h>
 #include <limits.h>
@@ -60,6 +61,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
+
 
 #ifndef NO_XMIM
 #include <X11/Xlocale.h>
@@ -105,6 +108,7 @@ static int virtKeyBindingsAreInvalid(const unsigned char* bindings);
 static void restoreInsaneVirtualKeyBindings(unsigned char* bindings);
 static void noWarningFilter(String);
 static void showWarningFilter(String);
+static void dndOpenFileCB(Widget w, XtPointer value, XtPointer data);
 
 WindowInfo *WindowList = NULL;
 Display *TheDisplay = NULL;
@@ -486,6 +490,7 @@ int main(int argc, char **argv)
     putenv("XLIB_SKIP_ARGB_VISUALS=1");
     TheDisplay = XtOpenDisplay (context, NULL, APP_NAME, APP_CLASS,
 	    NULL, 0, &argc, argv);
+	XdndInit(TheDisplay, context, dndOpenFileCB, NULL);
     unmaskArgvKeywords(argc, argv, protectedKeywords);
     if (!TheDisplay) {
         /* Respond to -V or -version even if there is no display */
@@ -1333,4 +1338,60 @@ static void showWarningFilter(String message)
 static void noWarningFilter(String message)
 {
   return;
+}
+static void dndOpenFileCB(Widget w, XtPointer value, XtPointer data) {
+    char *urilist = value;
+    
+    size_t len = strlen(urilist);
+    
+    size_t start = 0;
+    if(len > 7 && !memcmp(urilist, "file://", 7)) {
+        start = 7;
+    }
+    
+    int err = 0;
+    
+    // urldecode
+    char *path = NEditMalloc(len + 1);
+    int k = 0;
+    for(int i=start;i<len;i++) {
+        char c = urilist[i];
+        if(c == '%') {
+            if(i + 2 < len) {
+                char code[3];
+                code[0] = urilist[i+1];
+                code[1] = urilist[i+2];
+                code[2] = '\0';
+                
+                errno = 0;
+                char *end = NULL;
+                int ascii = (int)strtol(code, &end, 16);
+                if(errno == 0 && end == &code[2]) {
+                    path[k] = ascii;
+                    i += 2;
+                } else {
+                    err = 1;
+                    break;
+                }
+            } else {
+                err = 1;
+                break;
+            }
+        } else if(c == '\n' || c == '\r') {
+            break;
+        } else {
+            path[k] = c;
+        }
+        
+        k++;
+    }
+    path[k] = '\0';
+    
+    // open file
+    char *params[2];
+    params[0] = path;
+    params[1] = NULL;
+    XtCallActionProc(w, "open", NULL, params, 1);
+    
+    NEditFree(path);
 }

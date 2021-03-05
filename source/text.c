@@ -37,6 +37,7 @@
 #include "nedit.h"
 #include "calltips.h"
 #include "../util/DialogF.h"
+#include "../util/xdnd.h"
 #include "window.h"
 #include "../util/nedit_malloc.h"
 
@@ -1184,6 +1185,7 @@ static void realize(Widget w, XtValueMask *valueMask,
         
     /* Continue with realize method from superclass */
     (xmPrimitiveClassRec.core_class.realize)(w, valueMask, attributes);
+	XdndEnable(w);
 }
 
 /*
